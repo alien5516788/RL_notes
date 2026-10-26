@@ -13,12 +13,18 @@ class State:
     pass
 
 
+states: list[State] = []
+
+
 # 2. Action (A)
 #
 #   A = {a1, a2, a3, ...}
 #
 class Action:
     pass
+
+
+actions: list[Action] = []
 
 
 # 3. World Model (P)
