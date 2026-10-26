@@ -71,14 +71,14 @@ def _world_model(s: State, a: Action, s_next: State, r: float) -> float:
 
 # Common Algorithms
 #
-#   - Dynamic Programming (DP):
+#   - Dynamic Programming (DP)
 #     - Policy Evaluation
 #     - Policy Iteration
 #     - Value Iteration
-#   - Monte Carlo Learning (MCL):
+#   - Monte Carlo Learning (MCL)
 #     - Monte Carlo Prediction
 #     - Monte Carlo Control
-#   - Temporal Dfference Learning (TD): TODO
+#   - Temporal Dfference Learning (TD)
 #     - SARSA
 #     - Q-learning
 #   - DQN: TODO
