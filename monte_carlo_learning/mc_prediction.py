@@ -12,8 +12,8 @@ from ..reinforcement_learning.mdp import (
 #
 class Step:
     def __init__(self, s: State, r: float):
-        self.state = s
-        self.reward = r
+        self.state = s  # Current state
+        self.reward = r  # Reward from next state
 
 
 # Environemnt
@@ -40,6 +40,7 @@ class Environment:
 #   π(a | s)
 #
 def policy(s: State, a: Action) -> float:
+    # Must decide the policy based on value
     return 0.9
 
 
@@ -52,6 +53,7 @@ value: dict[State, float] = {}
 
 # Alpha (α)
 # Learning rate
+#
 ALPHA: float = 0.1
 
 
@@ -73,11 +75,13 @@ def mc_prediction(episode: list[Step]):
 
     # G_t+1
     g = 0.0
+
     episode.reverse()
     for step in episode:
         # G_t = R_t+1 + γG_t+1
         g = step.reward + GAMMA * g
-        # error = G_t - V(s_t)
+
+        # error = G_t - V(S_t)
         error = g - value[step.state]
 
         # V(S_t) <- V(S_t) + α error
@@ -106,8 +110,10 @@ def train():
 
         while s != environment.terminal_state:
             a = action(s)
+
             # E(s, a) -> (s', r)
             (s_next, r) = environment.step(a)
+
             # Add step
             episode.append(Step(s, r))
 
