@@ -14,22 +14,14 @@ from ..reinforcement_learning.mdp import (
 #
 #   π(a | s)
 #
-pi_table: dict[tuple[State, Action], float] = {}
-
-
-def policy(s: State, a: Action) -> float:
-    return pi_table[(s, a)]
+policy: dict[tuple[State, Action], float] = {}
 
 
 # Value (V) - learnt
 #
 #  V(s) -> v
 #
-v_table: dict[State, float] = {}
-
-
-def value(s: State) -> float:
-    return v_table[s]
+value: dict[State, float] = {}
 
 
 # Policy Evaluation
@@ -42,7 +34,7 @@ def policy_evaluation():
         # Σ_a
         for a in actions:
             # π(a | s)
-            p = policy(s, a)
+            p = policy[(s, a)]
 
             # Σ_s'
             for s_next in states:
@@ -50,14 +42,14 @@ def policy_evaluation():
                 v += (
                     p
                     * world_model(s, a, s_next)
-                    * (reward(s, a, s_next) + (GAMMA * value(s_next)))
+                    * (reward(s, a, s_next) + (GAMMA * value[s_next]))
                 )
 
         # V(s) <- v
-        v_table[s] = v
+        value[s] = v
 
 
-# Policy Improvement
+# Bellman equation for policy improvement
 #
 #     Q(s, a) = Σ_s' P(s' | s, a) * [R(s, a, s') + γV(s')]
 #     a* = argmax_a Q(s, a)
@@ -81,7 +73,7 @@ def policy_improvement():
             for s_next in states:
                 # q += P(s' | s, a) * [R(s, a, s') + γV(s')]
                 q += world_model(s, a, s_next) * (
-                    reward(s, a, s_next) + (GAMMA * value(s_next))
+                    reward(s, a, s_next) + (GAMMA * value[s_next])
                 )
 
             # Q(s, a) = q
@@ -94,9 +86,9 @@ def policy_improvement():
         # π(a | s) <- 1 if a == a*, 0 otherwise
         for a in actions:
             if a == best_action:
-                pi_table[(s, a)] = 1.0
+                policy[(s, a)] = 1.0
             else:
-                pi_table[(s, a)] = 0.0
+                policy[(s, a)] = 0.0
 
 
 def policy_iteration():

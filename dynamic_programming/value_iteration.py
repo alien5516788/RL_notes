@@ -14,10 +14,10 @@ from ..reinforcement_learning.mdp import (
 #
 #  V(s) -> v
 #
-v_table: dict[State, float] = {}
+value: dict[State, float] = {}
 
 
-# Value iteration
+# Bellman equation for value iteration
 #
 #   Q(s, a) = Σ_s' P(s' | s, a) * [R(s, a, s') + γV(s')]
 #   V(s) <- max_a Q(s, a)
@@ -38,14 +38,14 @@ def value_iteration():
             for s_next in states:
                 # Q(s, a) =+ Σ_s' P(s' | s, a) * [R(s, a, s') + γV(s')]
                 q += world_model(s, a, s_next) * (
-                    reward(s, a, s_next) + (GAMMA * v_table[s_next])
+                    reward(s, a, s_next) + (GAMMA * value[s_next])
                 )
 
             # max_a Q(s, a)
             v = max(q, v)
 
         # V(s) <- max_a Q(s, a)
-        v_table[s] = v
+        value[s] = v
 
 
 def train():

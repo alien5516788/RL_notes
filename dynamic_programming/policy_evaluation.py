@@ -21,14 +21,10 @@ def policy(s: State, a: Action) -> float:
 #
 #  V(s) -> v
 #
-v_table: dict[State, float] = {}
+value: dict[State, float] = {}
 
 
-def value(s: State) -> float:
-    return v_table[s]
-
-
-# Bellman equation for Policy Evaluation
+# Bellman equation for policy evaluation
 #
 #   V(s) <- Σ_a π(a | s) * Σ_s' P(s' | s, a) * [R(s, a, s') + γV(s')]
 #
@@ -50,11 +46,11 @@ def policy_evaluation():
                 v += (
                     p
                     * world_model(s, a, s_next)
-                    * (reward(s, a, s_next) + (GAMMA * value(s_next)))
+                    * (reward(s, a, s_next) + (GAMMA * value[s_next]))
                 )
 
         # V(s) <- v
-        v_table[s] = v
+        value[s] = v
 
 
 def train():
