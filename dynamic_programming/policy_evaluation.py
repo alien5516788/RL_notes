@@ -28,33 +28,29 @@ def value(s: State) -> float:
     return v_table[s]
 
 
-# Value Backup / Bellman equation for Policy Evaluation
+# Bellman equation for Policy Evaluation
 #
 #   V(s) <- Σ_a π(a | s) * Σ_s' P(s' | s, a) * [R(s, a, s') + γV(s')]
 #
-# Value is learnt by continuously interacting with the world_model
+# Value is improved by following a fixed policy
 #
 def policy_evaluation():
     for s in states:
         # v
         v = 0.0
+
         # Σ_a
         for a in actions:
             # π(a | s)
-            action_probability = policy(s, a)
+            p = policy(s, a)
+
             # Σ_s'
             for s_next in states:
-                # P(s' | s, a)
-                transition_probability = world_model(s, a, s_next)
-                # R(s, a, s')
-                immediate_reward = reward(s, a, s_next)
-                # V(s')
-                future_value = value(s_next)
                 # v += π(a | s) * Σ_s' P(s' | s, a) * [R(s, a, s') + γV(s')]
                 v += (
-                    action_probability
-                    * transition_probability
-                    * (immediate_reward + (GAMMA * future_value))
+                    p
+                    * world_model(s, a, s_next)
+                    * (reward(s, a, s_next) + (GAMMA * value(s_next)))
                 )
 
         # V(s) <- v
@@ -62,7 +58,7 @@ def policy_evaluation():
 
 
 def train():
-    converged = True
+    converged = False
 
     while not converged:
         policy_evaluation()
