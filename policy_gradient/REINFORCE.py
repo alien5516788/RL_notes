@@ -109,9 +109,11 @@ def reinforce(episode: list[Step]):
     # G_t+1
     g = 0.0
     episode.reverse()
+
     for t in range(len(episode)):
         # G_t = R_t+1 + γG_t+1
         g = episode[t].reward + GAMMA * g
+
         returns.insert(0, g)
 
     gradients: dict[tuple[State, Action], float] = {}
@@ -120,9 +122,8 @@ def reinforce(episode: list[Step]):
     for t, step in enumerate(episode):
         # G_t
         g_t = returns[t]
+
         for a in actions:
-            # π_θ(a | s_t)
-            p = policy(step.state, a)
             # I(a_t == a)
             if step.action == a:
                 indicator = 1.0
@@ -131,9 +132,11 @@ def reinforce(episode: list[Step]):
 
             # ∇θ log π_θ(a_t | s_t)
             # ∂ log π_θ(a_t | s_t) /∂ θ(s_t, a)
-            gradient = indicator - p
+            gradient = indicator - policy(step.state, a)
+
             # α γ^t G_t ∇θ log π_θ(a_t | s_t)
             update = ALPHA * pow(GAMMA, t) * g_t * gradient
+
             # Accumulate parameter update
             gradients[(step.state, a)] = gradients.get((step.state, a), 0.0) + update
 
