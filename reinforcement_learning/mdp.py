@@ -82,7 +82,7 @@ def _world_model(s: State, a: Action, s_next: State, r: float) -> float:
 #     - SARSA
 #     - Q-learning
 #   - DQN: TODO
-#   - Policy Gradient: TODO
+#   - Policy Gradient
 #   - Actor-Critic: TODO
 #   - PPO: TODO
 #

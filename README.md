@@ -1,6 +1,6 @@
 # Reinforcement Learning Notes
 
-A hands-on journey into reinforcement learning, implemented in Rust.
+A hands-on journey into reinforcement learning, implemented in Python and Rust.
 This repository documents my process of learning reinforcement learning from the fundamentals.
 The goal is to understand how these algorithms work, why they work, and how they differ from one another.
 
